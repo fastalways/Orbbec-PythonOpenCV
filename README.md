@@ -7,4 +7,5 @@ Orbbec-PythonOpenCV
 ### Ensure you have python version 3.5 upward
 ### Install python packages: opencv-python, numpy, primesense
 #### example by using pip: pip install opencv-python,numpy,primesense
+## Step 3
 ### Run streaming code using withcv2.py
