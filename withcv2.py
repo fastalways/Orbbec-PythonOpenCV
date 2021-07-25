@@ -23,6 +23,7 @@ ir_stream.start()
 while(cv2.waitKey(34)!=27):
 
     ret, color_img = color_stream.read()
+    color_img = cv2.flip(color_img,1)
 
     depth_frame = depth_stream.read_frame()
     depth_frame_data = depth_frame.get_buffer_as_uint16()
