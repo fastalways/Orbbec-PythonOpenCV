@@ -50,7 +50,8 @@ while(cv2.waitKey(34)!=27):
     cv2.imshow("ir_image", ir_img)
     
 
-
+color_stream.release()
 depth_stream.stop()
 ir_stream.stop()
 openni2.unload()
+cv2.destroyAllWindows()
