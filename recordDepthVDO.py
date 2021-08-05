@@ -2,12 +2,22 @@
 import numpy as np
 import cv2
 import time
+import os
 from primesense import openni2
 from primesense import _openni2 as c_api
 
 openni2.initialize("./Redist")     # can also accept the path of the OpenNI redistribution
 
 dev = openni2.Device.open_any()
+
+# Setting VDO Path
+vdo_path = './vdo/'
+vdo_dir_name = 'newvdo'
+vdo_dir_name = str(input("Enter VDO_DIR_NAME <= "))
+vdo_record_path = os.path.join(vdo_path, vdo_dir_name)
+os.mkdir(vdo_record_path)
+vdo_record_path += '/'
+print("VDO Directory '% s' created" % vdo_record_path) 
 
 # ----------------------- Depth INFO
 depth_sensor_info = dev.get_sensor_info(sensor_type=openni2.SENSOR_DEPTH)
@@ -102,9 +112,9 @@ while(cv2.waitKey( fetchFrameInterval )!=27):
 
     # init vdo header
     if(not initVDO_flag):
-        colorRecorder = cv2.VideoWriter("color.avi", fourcc, depth_mode.fps, (color_img.shape[1], color_img.shape[0]))
-        depthRecorder = cv2.VideoWriter("depth.avi", fourcc, depth_mode.fps, (encoded_depth.shape[1], encoded_depth.shape[0]))
-        irRecorder = cv2.VideoWriter("ir.avi", fourcc, depth_mode.fps, (encoded_ir.shape[1], encoded_ir.shape[0]))
+        colorRecorder = cv2.VideoWriter(vdo_record_path+"color.avi", fourcc, depth_mode.fps, (color_img.shape[1], color_img.shape[0]))
+        depthRecorder = cv2.VideoWriter(vdo_record_path+"depth.avi", fourcc, depth_mode.fps, (encoded_depth.shape[1], encoded_depth.shape[0]))
+        irRecorder = cv2.VideoWriter(vdo_record_path+"ir.avi", fourcc, depth_mode.fps, (encoded_ir.shape[1], encoded_ir.shape[0]))
         initVDO_flag = True
     # vdo write stream
     colorRecorder.write(color_img)
@@ -115,9 +125,6 @@ while(cv2.waitKey( fetchFrameInterval )!=27):
     cv2.imshow("depth_image", depth_img)
     cv2.imshow("ir_image", ir_img)
 
-print(f"color_img.dtype={color_img.dtype} color_img.shape={color_img.shape}")
-print(f"encoded_depth.dtype={encoded_depth.dtype} encoded_depth.shape={encoded_depth.shape}")
-print(f"encoded_depth.dtype={encoded_ir.dtype} encoded_depth.shape={encoded_ir.shape}")
 
 color_stream.release()
 depth_stream.stop()

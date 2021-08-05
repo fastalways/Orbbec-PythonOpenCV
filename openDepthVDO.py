@@ -3,9 +3,14 @@ import numpy as np
 import cv2
 import time
 
-color_stream = cv2.VideoCapture("color.avi")
-depth_stream = cv2.VideoCapture("depth.avi")
-ir_stream = cv2.VideoCapture("ir.avi")
+# Setting VDO Path
+vdo_path = './vdo/'
+vdo_dir_name = 'newvdo'
+vdo_dir_name = str(input("Enter VDO_DIR_NAME <= "))
+vdo_path += vdo_dir_name + '/'
+color_stream = cv2.VideoCapture(vdo_path+"color.avi")
+depth_stream = cv2.VideoCapture(vdo_path+"depth.avi")
+ir_stream = cv2.VideoCapture(vdo_path+"ir.avi")
 
 if not color_stream.isOpened():
     print("-> Cannot open color vdo !!")
@@ -35,7 +40,7 @@ while(cv2.waitKey( int(1000 / set_fps))!=27):
 
     if(not ret_color or not ret_depth or not ret_ir): # if error / or end of vdo
         print('Error occured or End of VDO')
-        cv2.waitKey(5000)
+        cv2.waitKey(3000)
         break
 
     # --- DECODE DEPTH --- 8bits x 2ch -> to 16bits 1 ch
