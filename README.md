@@ -9,3 +9,4 @@ Orbbec-PythonOpenCV
 #### example by using pip: pip install opencv-python,numpy,primesense
 ## Step 3
 ### Run streaming code using withcv2.py
+### OR Record VDO to files with recordDepthVDO.py AND Play with openDepthVDO.py
