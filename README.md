@@ -7,6 +7,7 @@ Orbbec Python OpenCV OpenNI Primesense Record Depth 16bits
 ### Ensure you have python version 3.5 upward
 ### Install python packages: opencv-python, numpy, primesense
 #### example by using pip: pip install opencv-python,numpy,primesense
+### Install VDO Codec HFYU
 ## Step 3
 ### Run streaming code using withcv2.py
 ### OR Record VDO to files with recordDepthVDO.py AND Play with openDepthVDO.py
