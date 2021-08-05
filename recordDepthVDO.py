@@ -1,6 +1,7 @@
 # require-package primesense opencv-python-contrib
 import numpy as np
 import cv2
+import time
 from primesense import openni2
 from primesense import _openni2 as c_api
 
@@ -19,7 +20,7 @@ print("Enter Depth Mode(Number) only16bits  <==== ", end="")
 selectedDepthMode = int(input())
 depth_stream.set_video_mode(depth_sensor_mode[selectedDepthMode])
 depth_mode = depth_stream.get_video_mode()
-print("##### ------> Selected Depth Mode:",depth_mode)
+
 depth_stream.start()
 
 # ----------------------- Infrared INFO
@@ -33,7 +34,11 @@ print("Enter IR Mode(Number) only16bits <==== ", end="")
 selectedIRMode = int(input())
 ir_stream.set_video_mode(ir_sensor_mode[selectedIRMode])
 ir_mode = ir_stream.get_video_mode()
+
+# ---- show vdo mode
+print("##### ------> Selected Depth Mode:",depth_mode)
 print("##### ------> Selected IR Mode:",ir_mode)
+
 ir_stream.start()
 
 # ----------------------- RGB Camera INFO
@@ -44,11 +49,12 @@ if not color_stream.isOpened():
     exit()
 
 # setting for record
-fourcc = cv2.VideoWriter_fourcc('H', '2', '6', '4')
+fourcc = cv2.VideoWriter_fourcc('H', 'F', 'Y', 'U')
 initVDO_flag = False
 colorRecorder = cv2.VideoWriter()
 depthRecorder = cv2.VideoWriter()
 irRecorder = cv2.VideoWriter()
+
 
 fetchFrameInterval = int(1000/depth_mode.fps) # based on depth streaming fps 
 
@@ -69,14 +75,12 @@ while(cv2.waitKey( fetchFrameInterval )!=27):
     depth_img = np.swapaxes(depth_img, 0, 2)
     depth_img = np.swapaxes(depth_img, 0, 1)
     depth_img *= 1
-    # covert depth 16bits to 2ch x 8bits / c1 -> depth8 (8 upper bits) / c2 -> depth8 (8 lower bits) /
+    # --- ENCODE DEPTH --- covert depth 16bits to 2ch x 8bits / c1 -> depth8 (8 upper bits) / c2 -> depth8 (8 lower bits) /
     cdepth_img = depth_img.copy()
     cdepth_img, _, _ = cv2.split(cdepth_img) # 3ch had the same value, thus split to 1ch
     depth_ch1 = np.uint8(np.right_shift(cdepth_img,8)) # make upper bits - using right shift and convert to uint8
     depth_ch2 = np.uint8(cdepth_img) # make lower bits - using convert to uint8 which 8 upper bits will lost
     encoded_depth = cv2.merge([depth_ch1,depth_ch2,depth_ch1])
-
-    
 
 
     #------ ir frame processing ------
@@ -89,7 +93,7 @@ while(cv2.waitKey( fetchFrameInterval )!=27):
     ir_img = np.swapaxes(ir_img, 0, 2)
     ir_img = np.swapaxes(ir_img, 0, 1)
     ir_img *= 1
-    # covert ir 16bits to 2ch x 8bits / c1 -> ir8 (8 upper bits) / c2 -> ir8 (8 lower bits) /
+    # --- ENCODE IR    ---  covert ir 16bits to 2ch x 8bits / c1 -> ir8 (8 upper bits) / c2 -> ir8 (8 lower bits) /
     cir_img = ir_img.copy()
     cir_img, _, _ = cv2.split(cir_img) # 3ch had the same value, thus split to 1ch
     ir_ch1 = np.uint8(np.right_shift(cir_img,8)) # make upper bits - using right shift and convert to uint8
@@ -120,3 +124,6 @@ depth_stream.stop()
 ir_stream.stop()
 openni2.unload()
 cv2.destroyAllWindows()
+
+##### for debug depth value
+#print(f"depth_img[200,200]={depth_img[200,200]}")
