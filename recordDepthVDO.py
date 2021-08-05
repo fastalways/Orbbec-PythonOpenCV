@@ -125,5 +125,5 @@ ir_stream.stop()
 openni2.unload()
 cv2.destroyAllWindows()
 
-##### for debug depth value
+####### for debug depth value
 #print(f"depth_img[200,200]={depth_img[200,200]}")

@@ -65,5 +65,5 @@ while(cv2.waitKey( int(1000 / set_fps))!=27):
 
 
 
-##### for debug depth value
+####### for debug depth value
 #print(f"decoded_depth[200,200]={decoded_depth[200,200]}")
