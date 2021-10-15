@@ -2,7 +2,8 @@
 Orbbec Python OpenCV OpenNI Primesense Record Depth 16bits
 ## Step 1
 ### Install Driver in directory "Driver-installer"
-#### Or manually download at https://orbbec3d.com/develop/ in Section Download Orbbec Camera Driver for Windows
+#### Or manually download at https://orbbec3d.com/develop/ in Section Download Orbbec Camera Driver for Windows/Linux
+#### For Linux you have to install driver from SDK (which matched with your Linux Distro)
 ## Step 2
 ### Ensure you have python version 3.5 upward
 ### Install python packages: opencv-python, numpy, primesense
@@ -15,3 +16,4 @@ Orbbec Python OpenCV OpenNI Primesense Record Depth 16bits
 ###   at the line -> openni2.initialize("./Redist") to yours ex. openni2.initialize("./Redist_linux/arm64")
 ###   Now (Oct2021) Official Orbbec make OpenNI redistribution inclued: arm arm64 and ubuntu16.04/18.04(x86_64)
 ###   Please see in ./Redist_linux
+###   And You have to run these python code as ROOT to access all of cameras
