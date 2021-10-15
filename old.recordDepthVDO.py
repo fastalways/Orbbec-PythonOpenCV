@@ -1,7 +1,7 @@
 # Modified from https://github.com/elmonkey/Python_OpenNI2
 # require-package primesense opencv-python-contrib
 import numpy as np
-import cv2
+import cv2 as cv 
 import time
 import os
 from primesense import openni2
@@ -54,27 +54,27 @@ ir_stream.start()
 
 # ----------------------- RGB Camera INFO
 
-color_stream = cv2.VideoCapture(0) # if used ni camera please use -> dev.create_color_stream()
+color_stream = cv.VideoCapture(0) # if used ni camera please use -> dev.create_color_stream()
 if not color_stream.isOpened():
     print("Cannot open color camera!!")
     exit()
 
 # setting for record
-fourcc = cv2.VideoWriter_fourcc('H', 'F', 'Y', 'U')
+fourcc = cv.VideoWriter_fourcc('H', 'F', 'Y', 'U')
 initVDO_flag = False
-colorRecorder = cv2.VideoWriter()
-depthRecorder = cv2.VideoWriter()
-irRecorder = cv2.VideoWriter()
+colorRecorder = cv.VideoWriter()
+depthRecorder = cv.VideoWriter()
+irRecorder = cv.VideoWriter()
 
 
 fetchFrameInterval = int(1000/depth_mode.fps) # based on depth streaming fps 
 
 print("started streaming...")
 
-while(cv2.waitKey( fetchFrameInterval )!=27):
+while(cv.waitKey( fetchFrameInterval )!=27):
     #------ color frame processing ------
     ret, color_img = color_stream.read()
-    color_img = cv2.flip(color_img,1)
+    color_img = cv.flip(color_img,1)
 
     #------ depth frame processing ------
     depth_frame = depth_stream.read_frame()
@@ -88,10 +88,10 @@ while(cv2.waitKey( fetchFrameInterval )!=27):
     depth_img *= 1
     # --- ENCODE DEPTH --- covert depth 16bits to 2ch x 8bits / c1 -> depth8 (8 upper bits) / c2 -> depth8 (8 lower bits) /
     cdepth_img = depth_img.copy()
-    cdepth_img, _, _ = cv2.split(cdepth_img) # 3ch had the same value, thus split to 1ch
+    cdepth_img, _, _ = cv.split(cdepth_img) # 3ch had the same value, thus split to 1ch
     depth_ch1 = np.uint8(np.right_shift(cdepth_img,8)) # make upper bits - using right shift and convert to uint8
     depth_ch2 = np.uint8(cdepth_img) # make lower bits - using convert to uint8 which 8 upper bits will lost
-    encoded_depth = cv2.merge([depth_ch1,depth_ch2,depth_ch1])
+    encoded_depth = cv.merge([depth_ch1,depth_ch2,depth_ch1])
 
 
     #------ ir frame processing ------
@@ -106,32 +106,32 @@ while(cv2.waitKey( fetchFrameInterval )!=27):
     ir_img *= 1
     # --- ENCODE IR    ---  covert ir 16bits to 2ch x 8bits / c1 -> ir8 (8 upper bits) / c2 -> ir8 (8 lower bits) /
     cir_img = ir_img.copy()
-    cir_img, _, _ = cv2.split(cir_img) # 3ch had the same value, thus split to 1ch
+    cir_img, _, _ = cv.split(cir_img) # 3ch had the same value, thus split to 1ch
     ir_ch1 = np.uint8(np.right_shift(cir_img,8)) # make upper bits - using right shift and convert to uint8
     ir_ch2 = np.uint8(cir_img) # make lower bits - using convert to uint8 which 8 upper bits will lost
-    encoded_ir = cv2.merge([ir_ch1,ir_ch2,ir_ch1])
+    encoded_ir = cv.merge([ir_ch1,ir_ch2,ir_ch1])
 
     # init vdo header
     if(not initVDO_flag):
-        colorRecorder = cv2.VideoWriter(vdo_record_path+"color.avi", fourcc, depth_mode.fps, (color_img.shape[1], color_img.shape[0]))
-        depthRecorder = cv2.VideoWriter(vdo_record_path+"depth.avi", fourcc, depth_mode.fps, (encoded_depth.shape[1], encoded_depth.shape[0]))
-        irRecorder = cv2.VideoWriter(vdo_record_path+"ir.avi", fourcc, depth_mode.fps, (encoded_ir.shape[1], encoded_ir.shape[0]))
+        colorRecorder = cv.VideoWriter(vdo_record_path+"color.avi", fourcc, depth_mode.fps, (color_img.shape[1], color_img.shape[0]))
+        depthRecorder = cv.VideoWriter(vdo_record_path+"depth.avi", fourcc, depth_mode.fps, (encoded_depth.shape[1], encoded_depth.shape[0]))
+        irRecorder = cv.VideoWriter(vdo_record_path+"ir.avi", fourcc, depth_mode.fps, (encoded_ir.shape[1], encoded_ir.shape[0]))
         initVDO_flag = True
     # vdo write stream
     colorRecorder.write(color_img)
     depthRecorder.write(encoded_depth)
     irRecorder.write(encoded_ir)
 
-    cv2.imshow("color_img",color_img)
-    cv2.imshow("depth_image", depth_img)
-    cv2.imshow("ir_image", ir_img)
+    cv.imshow("color_img",color_img)
+    cv.imshow("depth_image", depth_img)
+    cv.imshow("ir_image", ir_img)
 
 
 color_stream.release()
 depth_stream.stop()
 ir_stream.stop()
 openni2.unload()
-cv2.destroyAllWindows()
+cv.destroyAllWindows()
 
 ####### for debug depth value
 #print(f"depth_img[200,200]={depth_img[200,200]}")

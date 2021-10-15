@@ -1,7 +1,7 @@
 # Modified from https://github.com/elmonkey/Python_OpenNI2
 # require-package primesense opencv-python-contrib
 import numpy as np
-import cv2
+import cv2 as cv
 from primesense import openni2
 from primesense import _openni2 as c_api
 
@@ -37,7 +37,7 @@ if(ENABLE_CAM_COLOR):
         print("##### ------> Selected Color Mode(Number) only RBG888 :",color_mode)
         color_stream.start()
     else :
-        color_stream = cv2.VideoCapture(0) # if used ni camera please use -> dev.create_color_stream()
+        color_stream = cv.VideoCapture(0) # if used ni camera please use -> dev.create_color_stream()
         if not color_stream.isOpened():
             print("Cannot open color camera!!")
             exit()
@@ -79,16 +79,16 @@ fetchFrameInterval = int(1000/fps) # 1000/fps
 
 print("started streaming...")
 
-while(cv2.waitKey( fetchFrameInterval )!=27):
+while(cv.waitKey( fetchFrameInterval )!=27):
     if(ENABLE_CAM_COLOR):
         if OpenNI_RGB_CAMERA:
             color_frame = color_stream.read_frame()
             color_frame_data = color_frame.get_buffer_as_uint8()
             color_img = np.fromstring(color_frame_data,dtype=np.uint8).reshape(color_mode.resolutionY,color_mode.resolutionX,3)
-            color_img = cv2.cvtColor(color_img,cv2.COLOR_RGB2BGR)
+            color_img = cv.cvtColor(color_img,cv.COLOR_RGB2BGR)
         else:
             ret, color_img = color_stream.read()
-            color_img = cv2.flip(color_img,1)
+            color_img = cv.flip(color_img,1)
 
     if(ENABLE_CAM_DEPTH):
         depth_frame = depth_stream.read_frame()
@@ -114,11 +114,11 @@ while(cv2.waitKey( fetchFrameInterval )!=27):
         ir_img *= IR16_MultiplyFactor
 
     if(ENABLE_CAM_COLOR):
-        cv2.imshow("color_img",color_img)
+        cv.imshow("color_img",color_img)
     if(ENABLE_CAM_DEPTH):
-        cv2.imshow("depth_image", depth_img)
+        cv.imshow("depth_image", depth_img)
     if(ENABLE_CAM_IR):
-        cv2.imshow("ir_image", ir_img)
+        cv.imshow("ir_image", ir_img)
 if(ENABLE_CAM_COLOR):
     if OpenNI_RGB_CAMERA:
         color_stream.stop()
@@ -129,4 +129,4 @@ if(ENABLE_CAM_DEPTH):
 if(ENABLE_CAM_IR):
     ir_stream.stop()
 openni2.unload()
-cv2.destroyAllWindows()
+cv.destroyAllWindows()
