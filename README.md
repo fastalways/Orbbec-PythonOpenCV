@@ -13,10 +13,10 @@ Orbbec Python OpenCV OpenNI Primesense Record Color Depth IR 8/16bits
 ## Step 3
 ### Run streaming code using selectmode_win64.py
 ### OR Record VDO to files with recordDepthVDO.py AND Play with openDepthVDO.py
-##  ***** Note: if you use Linux you have to change OpenNI redistribution in every code 
-###   at the line -> openni2.initialize("./Redist") to yours ex. openni2.initialize("./Redist_linux/arm64")
-###   Now (Oct2021) Official Orbbec make OpenNI redistribution inclued: arm arm64 and ubuntu16.04/18.04(x86_64)
-###   Please see in ./Redist_linux
-###   And You have to run these python code as ROOT to access all of cameras
+###  ***** 
+###  Note:  if you use Linux you have to change OpenNI redistribution in every code 
+###         at the line -> openni2.initialize("./Redist") to yours ex. openni2.initialize("./Redist_linux/arm64")
+###         Now (Oct2021) Official Orbbec make OpenNI redistribution inclued: arm arm64 and ubuntu16.04/18.04(x86_64)
+###         Please see in ./Redist_linux
 
 # # Modified from https://github.com/elmonkey/Python_OpenNI2
