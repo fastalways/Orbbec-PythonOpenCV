@@ -3,6 +3,7 @@ Orbbec Python OpenCV OpenNI Primesense Record Color Depth IR 8/16bits
 ## Step 1
 ### Install Driver in directory "Driver-installer"
 #### Or manually download at https://orbbec3d.com/develop/ in Section Download Orbbec Camera Driver for Windows/Linux
+#### Or get from archive at Sep2021 at https://drive.google.com/drive/folders/1Vaj6_xWRGHD594UU1W69qljjxJhPgRRZ?usp=sharing
 #### For Linux you have to install driver from SDK (which matched with your Linux Distro)
 ## Step 2
 ### Ensure you have python version 3.5 upward
