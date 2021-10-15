@@ -49,7 +49,7 @@ while(cv.waitKey( int(1000 / set_fps))!=27):
     decoded_depth = np.left_shift(np.uint16(depth_ch1.copy()),8) # 8upperbits data -> convert uint16 and shift left << 8
     decoded_depth = np.bitwise_or(decoded_depth,np.uint16(depth_ch2.copy())) # bitwise or with 8lowerbits
 
-    # --- DECODE DEPTH --- 8bits x 2ch -> to 16bits 1 ch
+    # --- DECODE IR --- 8bits x 2ch -> to 16bits 1 ch
     ir_ch1, ir_ch2, _  = cv.split(ir_img) # 8upperbits data in ch1 / 8lowerbits data in ch2 / ignore ch3
     decoded_ir = np.left_shift(np.uint16(ir_ch1.copy()),8) # 8upperbits data -> convert uint16 and shift left << 8
     decoded_ir = np.bitwise_or(decoded_ir,np.uint16(ir_ch2.copy())) # bitwise or with 8lowerbits
